@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 // Phase 2B — build when podcast platform links and email tool are confirmed
 export default function ConnectPage() {
   return (
-    <section className="bg-true-black min-h-screen pt-32 pb-24">
+    <section className="bg-true-black min-h-screen pt-40 md:pt-52 pb-24">
       <div className="mx-auto max-w-6xl px-6 md:px-8">
         <h1 className="font-oswald font-700 text-5xl md:text-7xl text-ivory mb-4">
           {connect.headline}

@@ -22,7 +22,7 @@ export default function AboutPage() {
     <>
       {/* ── HERO ────────────────────────────────────────────────── */}
       <section
-        className="relative bg-true-black pt-32 pb-16 md:pt-40 md:pb-24"
+        className="relative bg-true-black pt-40 pb-16 md:pt-52 md:pb-24"
         aria-labelledby="about-headline"
       >
         {/* Atmospheric bg */}
