@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { home, episodes } from "@/content/siteContent";
 import { EpisodeHero } from "@/components/episodes/EpisodeHero";
@@ -31,21 +32,31 @@ export default function HomePage() {
         className="relative bg-true-black min-h-screen flex items-center pt-16"
         aria-labelledby="hero-headline"
       >
-        {/* Atmospheric background */}
+        {/* Hero background image */}
+        <Image
+          src="/images/hero-bg.jpg"
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority
+          aria-hidden="true"
+          sizes="100vw"
+        />
+        {/* Dark overlay + rust gradient */}
         <div
           className="absolute inset-0 pointer-events-none"
           aria-hidden="true"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(193,68,14,0.12) 0%, transparent 70%)",
+              "linear-gradient(to right, rgba(28,28,28,0.96) 0%, rgba(28,28,28,0.85) 50%, rgba(28,28,28,0.6) 100%)",
           }}
         />
-        {/* Grain texture */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          className="absolute inset-0 pointer-events-none"
           aria-hidden="true"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+            background:
+              "radial-gradient(ellipse 60% 80% at 80% 50%, rgba(193,68,14,0.15) 0%, transparent 70%)",
           }}
         />
 

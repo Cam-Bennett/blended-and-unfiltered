@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 
@@ -34,25 +35,26 @@ export function EpisodeCard({ episode, revealDelay = 0 }: EpisodeCardProps) {
 
   const cardContent = (
     <>
-      {/* Thumbnail area */}
+      {/* Thumbnail */}
       <div className="relative aspect-video bg-true-black overflow-hidden">
+        {episode.thumbnail && (
+          <Image
+            src={episode.thumbnail}
+            alt={episode.title}
+            fill
+            className="object-cover opacity-70 group-hover:opacity-80 transition-opacity duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        )}
         <div
           className="absolute inset-0 flex items-end p-4"
           style={{
             background:
-              "linear-gradient(to top, rgba(28,28,28,0.95) 0%, rgba(28,28,28,0.2) 60%, transparent 100%)",
+              "linear-gradient(to top, rgba(28,28,28,0.95) 0%, rgba(28,28,28,0.4) 60%, transparent 100%)",
           }}
         >
           <Badge>Ep. {episode.number}</Badge>
         </div>
-        <div
-          className="absolute inset-0 opacity-10"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 30% 40%, #C1440E 0%, transparent 60%)",
-          }}
-        />
       </div>
 
       <div className="p-6">
