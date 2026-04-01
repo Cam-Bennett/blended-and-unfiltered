@@ -1,101 +1,159 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { home, episodes } from "@/content/siteContent";
+import { EpisodeHero } from "@/components/episodes/EpisodeHero";
+import { EpisodeGrid } from "@/components/episodes/EpisodeGrid";
+import { SubscribeCTA } from "@/components/cta/SubscribeCTA";
+import { CredentialStrip } from "@/components/ui/CredentialStrip";
+import { ScrollRevealWrapper } from "@/components/layout/ScrollRevealWrapper";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: home.meta.title,
+  description: home.meta.description,
+  alternates: {
+    canonical: "/",
+  },
+};
+
+const featuredEpisode =
+  episodes.items.find((ep) => ep.id === home.featuredEpisodeId) ??
+  episodes.items[0];
+
+const recentEpisodes = episodes.items
+  .filter((ep) => ep.id !== featuredEpisode.id)
+  .slice(0, home.recentEpisodesCount);
+
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <>
+      {/* ── HERO ────────────────────────────────────────────────── */}
+      <section
+        className="relative bg-true-black min-h-screen flex items-center pt-16"
+        aria-labelledby="hero-headline"
+      >
+        {/* Atmospheric background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden="true"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(193,68,14,0.12) 0%, transparent 70%)",
+          }}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        {/* Grain texture */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          aria-hidden="true"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          }}
+        />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="relative mx-auto max-w-6xl px-6 md:px-8 py-24 md:py-32">
+          {/* Eyebrow */}
+          <p className="font-oswald font-600 text-xs tracking-widest uppercase text-rust mb-6 animate-[fadeSlideUp_0.6s_ease-out_both]">
+            {home.hero.eyebrow}
+          </p>
+
+          {/* Main headline */}
+          <h1
+            id="hero-headline"
+            className="font-oswald font-700 leading-none text-ivory mb-6"
+            style={{ fontSize: "clamp(3rem, 10vw, 7.5rem)" }}
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {home.hero.headline.split("\n").map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
+
+          {/* Subheadline */}
+          <p
+            className="font-lato text-lg md:text-xl text-ivory/70 leading-relaxed max-w-xl mb-10"
+            style={{ animationDelay: "0.2s" }}
           >
-            Read our docs
-          </a>
+            {home.hero.subheadline}
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href={home.hero.cta.href}
+              className="inline-flex items-center justify-center min-h-[52px] px-8 bg-rust text-ivory font-oswald font-700 text-sm tracking-widest uppercase hover:bg-rust/90 transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-true-black"
+            >
+              {home.hero.cta.label}
+            </Link>
+            <Link
+              href={home.hero.secondaryCta.href}
+              className="inline-flex items-center justify-center min-h-[52px] px-8 border border-white/20 text-ivory font-oswald font-600 text-sm tracking-widest uppercase hover:border-white/40 hover:bg-white/5 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ivory focus-visible:ring-offset-2 focus-visible:ring-offset-true-black"
+            >
+              {home.hero.secondaryCta.label}
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* ── FEATURED EPISODE ────────────────────────────────────── */}
+      <ScrollRevealWrapper>
+        <section className="bg-true-black py-16 md:py-24" aria-label="Latest episode">
+          <div className="mx-auto max-w-6xl px-6 md:px-8">
+            <p className="font-oswald font-600 text-xs tracking-widest uppercase text-ivory/40 mb-6">
+              Latest Episode
+            </p>
+            <EpisodeHero episode={featuredEpisode} />
+          </div>
+        </section>
+      </ScrollRevealWrapper>
+
+      {/* ── MISSION ─────────────────────────────────────────────── */}
+      <ScrollRevealWrapper>
+        <section className="bg-ivory text-true-black py-16 md:py-24" aria-label="Our mission">
+          <div className="mx-auto max-w-6xl px-6 md:px-8">
+            <div className="reveal max-w-2xl">
+              <p className="font-oswald font-600 text-xs tracking-widest uppercase text-rust mb-6">
+                Why This Show Exists
+              </p>
+              <p className="font-lato text-lg md:text-xl text-charcoal leading-relaxed">
+                {home.mission}
+              </p>
+            </div>
+          </div>
+        </section>
+      </ScrollRevealWrapper>
+
+      {/* ── RECENT EPISODES ─────────────────────────────────────── */}
+      {recentEpisodes.length > 0 && (
+        <ScrollRevealWrapper>
+          <section
+            className="bg-true-black py-16 md:py-24"
+            aria-label="Recent episodes"
+          >
+            <div className="mx-auto max-w-6xl px-6 md:px-8">
+              <div className="flex items-end justify-between mb-10">
+                <h2 className="font-oswald font-700 text-3xl md:text-4xl text-ivory">
+                  More Episodes
+                </h2>
+                <Link
+                  href="/episodes"
+                  className="font-oswald font-600 text-sm tracking-widest uppercase text-rust hover:text-amber transition-colors duration-150"
+                >
+                  All Episodes →
+                </Link>
+              </div>
+              <EpisodeGrid episodes={recentEpisodes} />
+            </div>
+          </section>
+        </ScrollRevealWrapper>
+      )}
+
+      {/* ── SUBSCRIBE CTA ───────────────────────────────────────── */}
+      <ScrollRevealWrapper>
+        <SubscribeCTA />
+      </ScrollRevealWrapper>
+
+      {/* ── CREDENTIAL STRIP ────────────────────────────────────── */}
+      <CredentialStrip />
+    </>
   );
 }
